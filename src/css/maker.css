@@ -1,0 +1,266 @@
+/* =========================================================
+   maker.css — 카드뉴스 에디터 UI + 카드/템플릿 스타일
+   카드 내부 색·폰트는 전부 테마 CSS 변수(--card-*)를 사용
+   ========================================================= */
+
+.maker {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #f4f4f5;
+}
+
+/* ── 상단 바 ── */
+.maker-topbar {
+  height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e7;
+}
+.maker-logo {
+  font-family: "General Sans", sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-size: 17px;
+}
+.maker-export {
+  height: 38px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 8px;
+  background: #111;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+}
+.maker-export:disabled { opacity: 0.5; }
+
+/* ── 본문(패널 + 스테이지) ── */
+.maker-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+/* ── 좌측 패널 ── */
+.maker-panel {
+  width: 240px;
+  flex-shrink: 0;
+  background: #fff;
+  border-right: 1px solid #e5e5e7;
+  padding: 20px 16px;
+  overflow-y: auto;
+}
+.panel-group { margin-bottom: 24px; }
+.panel-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #8a8a8e;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+.panel-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 8px 14px;
+  border: 1px solid #d9d9dd;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  transition: all 0.15s ease;
+}
+.chip:hover { border-color: #aaa; }
+.chip.active { background: #111; color: #fff; border-color: #111; }
+.chip.shuffle { width: 100%; text-align: center; }
+
+/* ── 중앙 스테이지 ── */
+.maker-stage {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  overflow: auto;
+}
+
+/* ── 카드 (4:5 고정) ── */
+.card-canvas {
+  width: 360px;
+  height: 450px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.14);
+}
+
+/* ── 템플릿 공통 ── */
+.tpl {
+  width: 100%;
+  height: 100%;
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.tpl [contenteditable] { outline: none; overflow-wrap: anywhere; }
+.tpl [contenteditable]:focus { box-shadow: 0 0 0 2px var(--card-accent); border-radius: 2px; }
+
+/* 표지 */
+.tpl-cover { justify-content: flex-end; }
+.tpl-cover .tpl-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+.tpl-cover .tpl-subtitle {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 15px;
+  margin-top: 16px;
+  color: var(--card-accent);
+  letter-spacing: -0.01em;
+}
+
+/* 본문 */
+.tpl-body { justify-content: center; gap: 16px; }
+.tpl-body .tpl-heading {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+}
+.tpl-body .tpl-paragraph {
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--card-sub);
+}
+
+/* 리스트 */
+.tpl-list { justify-content: center; gap: 18px; }
+.tpl-list .tpl-heading {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+.tpl-items { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.tpl-item { display: flex; align-items: baseline; gap: 12px; }
+.tpl-item-num { font-family: var(--font-display); font-weight: 600; font-size: 15px; flex-shrink: 0; }
+.tpl-item-text { font-family: var(--font-body); font-size: 17px; flex: 1; }
+.tpl-item-del {
+  border: none; background: none; color: var(--card-sub);
+  font-size: 18px; line-height: 1; opacity: 0.5;
+}
+.tpl-item-add {
+  align-self: flex-start; border: 1px dashed var(--card-sub);
+  background: none; color: var(--card-sub); border-radius: 6px;
+  padding: 6px 10px; font-size: 13px;
+}
+
+/* 인용 */
+.tpl-quote { justify-content: center; }
+.tpl-quote-mark { font-family: var(--font-body); font-size: 72px; line-height: 0.6; }
+.tpl-quote-text {
+  font-family: var(--font-body);
+  font-size: 26px;
+  line-height: 1.4;
+  margin: 8px 0 20px;
+}
+.tpl-quote-source { font-family: var(--font-display); font-weight: 500; font-size: 15px; color: var(--card-sub); }
+
+/* 통계 */
+.tpl-stat { justify-content: center; }
+.tpl-stat-figure { display: flex; align-items: baseline; }
+.tpl-stat-number {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 110px;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--card-accent);
+}
+.tpl-stat-unit {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 34px;
+  color: var(--card-accent);
+  margin-left: 4px;
+}
+.tpl-stat-caption { font-family: var(--font-body); font-size: 18px; margin-top: 16px; color: var(--card-sub); }
+
+/* ── 하단 덱 ── */
+.deck-strip {
+  flex-shrink: 0;
+  height: 148px;
+  background: #fff;
+  border-top: 1px solid #e5e5e7;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  overflow-x: auto;
+}
+.deck-item {
+  flex-shrink: 0;
+  width: 84px;
+  cursor: pointer;
+}
+.deck-thumb {
+  width: 84px;
+  height: 105px;
+  border: 2px solid #e0e0e2;
+  border-radius: 5px;
+  overflow: hidden;
+  background: #fff;
+}
+.deck-item.active .deck-thumb { border-color: #111; }
+/* 360×450 카드를 0.2333배로 축소해 썸네일에 담음 (84/360) */
+.deck-thumb-inner {
+  width: 360px;
+  height: 450px;
+  transform: scale(0.2333);
+  transform-origin: top left;
+  pointer-events: none;
+}
+.deck-item-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+.deck-item-idx { font-size: 10px; color: #8a8a8e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.deck-item-actions { display: flex; gap: 2px; flex-shrink: 0; }
+.deck-item-actions button {
+  border: none; background: none; color: #8a8a8e;
+  font-size: 13px; width: 16px; height: 16px; line-height: 1; padding: 0;
+}
+.deck-item-actions button:disabled { opacity: 0.25; }
+.deck-add {
+  flex-shrink: 0;
+  width: 84px;
+  height: 105px;
+  border: 2px dashed #d0d0d3;
+  border-radius: 5px;
+  background: none;
+  color: #8a8a8e;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ── 반응형 (좁은 화면: 패널을 상단으로) ── */
+@media (max-width: 720px) {
+  .maker-body { flex-direction: column; }
+  .maker-panel { width: 100%; border-right: none; border-bottom: 1px solid #e5e5e7; display: flex; gap: 20px; padding: 14px 16px; overflow-x: auto; }
+  .panel-group { margin-bottom: 0; }
+}

@@ -1,0 +1,32 @@
+/* =========================================================
+   reset.css — 카드뉴스 에디터 전역 (중립 버전)
+   GOI 모바일/PWA 셸은 걷어내고 웹 툴용으로 새로 작성
+   ========================================================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+  color: #111;
+  background: #f4f4f5;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.4;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
