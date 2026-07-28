@@ -10,17 +10,11 @@ export default function CardNewsMaker() {
   const [cards, setCards] = useState(() => [makeCard('cover'), makeCard('body')])
   const [current, setCurrent] = useState(0)
   const [themeId, setThemeId] = useState('editorial')
-  const [accent, setAccent] = useState(null) // Shuffle override
   const [exporting, setExporting] = useState(false)
   const cardRef = useRef(null)
 
   const card = cards[current]
-
-  // 테마 = 기본 토큰 + Shuffle accent 오버라이드
-  const theme = {
-    ...THEMES[themeId],
-    vars: { ...THEMES[themeId].vars, ...(accent ? { '--card-accent': accent } : {}) },
-  }
+  const theme = THEMES[themeId]
 
   // ── 슬롯 편집 ──
   const setSlot = (key, value) => {
@@ -64,14 +58,6 @@ export default function CardNewsMaker() {
       merged[k] = k in card.slots ? card.slots[k] : structuredClone(defaults[k])
     }
     setCards((prev) => prev.map((c, i) => (i === current ? { ...c, templateId: tid, slots: merged } : c)))
-  }
-
-  // ── Shuffle (accent 색상환 안에서) ──
-  const shuffle = () => {
-    const opts = THEMES[themeId].accents
-    let pick = accent
-    while (opts.length > 1 && pick === accent) pick = opts[Math.floor(Math.random() * opts.length)]
-    setAccent(pick)
   }
 
   // ── 내보내기 (현재 카드) ──
@@ -122,15 +108,10 @@ export default function CardNewsMaker() {
                 <button
                   key={id}
                   className={'chip' + (themeId === id ? ' active' : '')}
-                  onClick={() => { setThemeId(id); setAccent(null) }}
+                  onClick={() => setThemeId(id)}
                 >{THEMES[id].label}</button>
               ))}
             </div>
-          </section>
-
-          <section className="panel-group">
-            <h3 className="panel-title">변주</h3>
-            <button className="chip shuffle" onClick={shuffle}>🎲 Shuffle 강조색</button>
           </section>
         </aside>
 

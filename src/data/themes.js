@@ -1,41 +1,65 @@
 // 테마 = 덱 전역 스타일 토큰 1벌 (일관성=카드 레벨 원칙).
-// 각 테마는 CSS 변수로 카드에 주입된다. accent 배열 = Shuffle 색상 후보.
+// 각 배경(bg)에 가독성 맞춘 글자색(ink)·보조색(sub)·강조색(accent)을 짝지음.
+// 소프트 배경은 컬러리스트 리서치 기반: 명도 높고 채도 낮은 톤(원색 아님).
+const GS = "'General Sans', sans-serif"     // 영문 디스플레이
+const NR = "'Newsreader', serif"            // 에디토리얼 세리프
+
 export const THEMES = {
   editorial: {
-    label: 'Editorial',
+    label: 'White',
     vars: {
-      '--card-bg': '#ffffff',
-      '--card-ink': '#111111',
-      '--card-sub': '#6b6b6b',
-      '--card-accent': '#111111',
-      '--font-display': "'General Sans', sans-serif",
-      '--font-body': "'Newsreader', serif",
+      '--card-bg': '#ffffff', '--card-ink': '#111111', '--card-sub': '#6b6b6b',
+      '--card-accent': '#111111', '--font-display': GS, '--font-body': NR,
     },
-    accents: ['#111111', '#c8442a', '#1d4ed8', '#0f766e', '#b45309'],
   },
   mono: {
-    label: 'Mono Dark',
+    label: 'Dark',
     vars: {
-      '--card-bg': '#111111',
-      '--card-ink': '#f5f5f5',
-      '--card-sub': '#9a9a9a',
-      '--card-accent': '#d6ff1e',
-      '--font-display': "'General Sans', sans-serif",
-      '--font-body': "'General Sans', sans-serif",
+      '--card-bg': '#111111', '--card-ink': '#f5f5f5', '--card-sub': '#9a9a9a',
+      '--card-accent': '#d6ff1e', '--font-display': GS, '--font-body': GS,
     },
-    accents: ['#d6ff1e', '#ff5a5f', '#4dd0e1', '#ffd166', '#c084fc'],
   },
-  soft: {
-    label: 'Soft',
+  cream: {
+    label: 'Cream',
     vars: {
-      '--card-bg': '#f4efe6',
-      '--card-ink': '#2b2622',
-      '--card-sub': '#7a7167',
-      '--card-accent': '#c0553b',
-      '--font-display': "'General Sans', sans-serif",
-      '--font-body': "'Newsreader', serif",
+      '--card-bg': '#fbf4e0', '--card-ink': '#3e3730', '--card-sub': '#8a7f6e',
+      '--card-accent': '#c58b2e', '--font-display': GS, '--font-body': NR,
     },
-    accents: ['#c0553b', '#4a7c59', '#2f5d8a', '#a67c00', '#8a5a83'],
+  },
+  blush: {
+    label: 'Blush',
+    vars: {
+      '--card-bg': '#fbecef', '--card-ink': '#4a3b40', '--card-sub': '#9b8288',
+      '--card-accent': '#c25b72', '--font-display': GS, '--font-body': NR,
+    },
+  },
+  sky: {
+    label: 'Sky',
+    vars: {
+      '--card-bg': '#e9f2fb', '--card-ink': '#1f2a38', '--card-sub': '#66758a',
+      '--card-accent': '#2f6fbf', '--font-display': GS, '--font-body': NR,
+    },
+  },
+  sage: {
+    label: 'Sage',
+    vars: {
+      '--card-bg': '#e9f3eb', '--card-ink': '#273229', '--card-sub': '#6e7c70',
+      '--card-accent': '#3e7d5a', '--font-display': GS, '--font-body': NR,
+    },
+  },
+  lavender: {
+    label: 'Lavender',
+    vars: {
+      '--card-bg': '#f0ecf9', '--card-ink': '#302a3d', '--card-sub': '#7c7488',
+      '--card-accent': '#6c4cb0', '--font-display': GS, '--font-body': NR,
+    },
+  },
+  oat: {
+    label: 'Oat',
+    vars: {
+      '--card-bg': '#f4efe6', '--card-ink': '#2e2a24', '--card-sub': '#7a7266',
+      '--card-accent': '#8a6d3b', '--font-display': GS, '--font-body': NR,
+    },
   },
 }
 
