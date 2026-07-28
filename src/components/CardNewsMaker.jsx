@@ -11,12 +11,11 @@ import '../css/maker.css'
 const isDefaultCard = (card) =>
   JSON.stringify(card.slots) === JSON.stringify(TEMPLATES[card.templateId].defaults)
 
-export default function CardNewsMaker() {
-  // 문서(카드들 + 테마)를 히스토리로 관리 → undo/redo
-  const { state: doc, set: setDoc, undo, redo, canUndo, canRedo } = useHistory({
-    cards: [makeCard('cover'), makeCard('body')],
-    themeId: 'editorial',
-  })
+export default function CardNewsMaker({ initialDeck, onRestart }) {
+  // 문서(카드들 + 테마)를 히스토리로 관리 → undo/redo. 생성 플로우에서 넘어온 덱으로 시작.
+  const { state: doc, set: setDoc, undo, redo, canUndo, canRedo } = useHistory(
+    initialDeck || { cards: [makeCard('cover'), makeCard('body')], themeId: 'editorial' },
+  )
   const cards = doc.cards
   const themeId = doc.themeId
 
@@ -40,6 +39,10 @@ export default function CardNewsMaker() {
       (cs) => cs.map((c, i) => (i === current ? { ...c, slots: { ...c.slots, [key]: value } } : c)),
       `slot:${card.id}:${key}`,
     )
+
+  // 레이아웃 변형 (현재 카드)
+  const setVariant = (variant) =>
+    setCards((cs) => cs.map((c, i) => (i === current ? { ...c, variant } : c)))
 
   // ── 카드 CRUD ──
   const addCard = () => {
@@ -115,7 +118,10 @@ export default function CardNewsMaker() {
     <div className="maker">
       {/* 상단 툴바 */}
       <header className="maker-topbar">
-        <span className="maker-logo">Card News Editor</span>
+        <div className="maker-topbar-left">
+          {onRestart && <button className="icon-btn" onClick={onRestart} title="새로 만들기">←</button>}
+          <span className="maker-logo">Card News Editor</span>
+        </div>
         <div className="maker-topbar-right">
           <button className="icon-btn" onClick={undo} disabled={!canUndo} title="되돌리기 (Ctrl+Z)">↩</button>
           <button className="icon-btn" onClick={redo} disabled={!canRedo} title="다시 실행 (Ctrl+Shift+Z)">↪</button>
@@ -160,6 +166,19 @@ export default function CardNewsMaker() {
                   </button>
                 )
               })}
+            </div>
+          </section>
+
+          <section className="panel-group">
+            <h3 className="panel-title">레이아웃</h3>
+            <div className="panel-btns">
+              {[0, 1, 2].map((vi) => (
+                <button
+                  key={vi}
+                  className={'chip' + ((card.variant || 0) === vi ? ' active' : '')}
+                  onClick={() => setVariant(vi)}
+                >{['기본', '변형 1', '변형 2'][vi]}</button>
+              ))}
             </div>
           </section>
         </aside>
