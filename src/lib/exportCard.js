@@ -1,8 +1,9 @@
 import html2canvas from 'html2canvas'
 
-// EditorPage.jsx(다꾸 편집기) 938~987 내보내기 로직 수확 → 카드용 함수화.
-// 카드 DOM 엘리먼트를 받아 고해상도 PNG dataURL 반환. (4:5, scale로 1080×1350 목표)
-export async function captureCard(el, { scale = 3, background = '#ffffff' } = {}) {
+// 카드 DOM을 받아 고해상도 PNG dataURL 반환.
+// 표시 크기가 달라도 항상 targetWidth(기본 1080) 기준으로 캡처 → 4:5면 1080×1350.
+export async function captureCard(el, { targetWidth = 1080, background = '#ffffff' } = {}) {
+  const scale = targetWidth / el.offsetWidth
   const canvas = await html2canvas(el, {
     useCORS: true,
     allowTaint: true,

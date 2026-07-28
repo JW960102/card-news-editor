@@ -103,14 +103,23 @@ export default function CardNewsMaker() {
 
           <section className="panel-group">
             <h3 className="panel-title">테마</h3>
-            <div className="panel-btns">
-              {THEME_IDS.map((id) => (
-                <button
-                  key={id}
-                  className={'chip' + (themeId === id ? ' active' : '')}
-                  onClick={() => setThemeId(id)}
-                >{THEMES[id].label}</button>
-              ))}
+            <div className="swatches">
+              {THEME_IDS.map((id) => {
+                const v = THEMES[id].vars
+                return (
+                  <button
+                    key={id}
+                    className={'swatch' + (themeId === id ? ' active' : '')}
+                    onClick={() => setThemeId(id)}
+                    title={THEMES[id].label}
+                  >
+                    <span className="swatch-chip" style={{ background: v['--card-bg'] }}>
+                      <span className="swatch-dot" style={{ background: v['--card-accent'] }} />
+                    </span>
+                    <span className="swatch-label">{THEMES[id].label}</span>
+                  </button>
+                )
+              })}
             </div>
           </section>
         </aside>
