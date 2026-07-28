@@ -1,5 +1,5 @@
-import CardNewsMaker from './components/CardNewsMaker.jsx'
+import CardNewsApp from './components/CardNewsApp.jsx'
 
 export default function App() {
-  return <CardNewsMaker />
+  return <CardNewsApp />
 }

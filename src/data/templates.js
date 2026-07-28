@@ -21,17 +21,34 @@ export const TEMPLATES = {
     label: '통계',
     defaults: { number: '89', unit: '%', caption: '설명을 입력하세요' },
   },
+  grid: {
+    label: '번호그리드',
+    defaults: { heading: '핵심 4가지', items: ['첫 번째', '두 번째', '세 번째', '네 번째'] },
+  },
+  checklist: {
+    label: '체크리스트',
+    defaults: { heading: '이건 꼭 확인하세요', items: ['첫 번째 항목', '두 번째 항목', '세 번째 항목'] },
+  },
+  cta: {
+    label: '마무리',
+    defaults: { heading: '지금 시작해보세요', sub: '더 궁금하다면 프로필을 확인해 주세요', button: '자세히 보기' },
+  },
+  punch: {
+    label: '한줄강조',
+    defaults: { text: '여기에 가장 강한 한 문장' },
+  },
 }
 
 export const TEMPLATE_IDS = Object.keys(TEMPLATES)
 
 // 새 카드 객체 생성
 let seq = 0
-export function makeCard(templateId = 'cover') {
+export function makeCard(templateId = 'cover', variant = 0) {
   const t = TEMPLATES[templateId]
   return {
     id: `card_${Date.now()}_${seq++}`,
     templateId,
+    variant,
     slots: structuredClone(t.defaults),
   }
 }
