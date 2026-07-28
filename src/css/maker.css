@@ -39,6 +39,44 @@
   font-size: 14px;
 }
 .maker-export:disabled { opacity: 0.5; }
+.maker-topbar-right { display: flex; align-items: center; gap: 8px; }
+.icon-btn {
+  width: 36px; height: 36px;
+  border: 1px solid #d9d9dd;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 16px;
+  color: #333;
+  display: flex; align-items: center; justify-content: center;
+}
+.icon-btn:hover:not(:disabled) { border-color: #aaa; }
+.icon-btn:disabled { opacity: 0.35; cursor: default; }
+
+/* ── 삭제 확인 모달 ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+}
+.modal {
+  background: #fff;
+  border-radius: 14px;
+  padding: 24px;
+  width: 330px; max-width: 90vw;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+.modal-title { font-size: 17px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.02em; }
+.modal-desc { font-size: 13px; color: #6b6b6b; line-height: 1.5; margin-bottom: 20px; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.modal-btn {
+  padding: 9px 18px;
+  border-radius: 8px;
+  border: 1px solid #d9d9dd;
+  background: #fff;
+  font-size: 14px; font-weight: 500; color: #333;
+}
+.modal-btn.danger { background: #e2352f; color: #fff; border-color: #e2352f; }
 
 /* ── 본문(패널 + 스테이지) ── */
 .maker-body {
@@ -49,11 +87,11 @@
 
 /* ── 좌측 패널 (슬림) ── */
 .maker-panel {
-  width: 200px;
+  width: 268px;
   flex-shrink: 0;
   background: #fff;
   border-right: 1px solid #e5e5e7;
-  padding: 18px 16px;
+  padding: 20px 20px;
   overflow-y: auto;
 }
 .panel-group { margin-bottom: 22px; }
@@ -221,57 +259,95 @@
 }
 .tpl-stat-caption { font-family: var(--font-body); font-size: 5cqw; margin-top: 4.4cqw; color: var(--card-sub); }
 
-/* ── 하단 덱 (슬림) ── */
+/* ── 하단 레이어 관리(덱) ── */
 .deck-strip {
   flex-shrink: 0;
-  height: 120px;
+  height: 172px;
   background: #fff;
   border-top: 1px solid #e5e5e7;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0 16px;
+  gap: 16px;
+  padding: 0 20px;
   overflow-x: auto;
 }
-.deck-item { flex-shrink: 0; width: 70px; cursor: pointer; }
+.deck-item {
+  position: relative;
+  flex-shrink: 0;
+  width: 104px;
+  cursor: grab;
+}
+.deck-item.dragging { opacity: 0.4; }
+.deck-item:active { cursor: grabbing; }
 .deck-thumb {
-  width: 70px; height: 88px;
+  width: 104px; height: 130px;
   border: 2px solid #e0e0e2;
-  border-radius: 5px;
+  border-radius: 7px;
   overflow: hidden;
   background: #fff;
+  transition: border-color 0.12s ease;
 }
 .deck-item.active .deck-thumb { border-color: #111; }
-/* 360폭 카드를 0.1944배 축소해 썸네일에 담음 (70/360). container-type로 cqw도 정상 스케일 */
+/* 드롭 위치 표시: 왼쪽에 세로 바 */
+.deck-item.drop-target::before {
+  content: '';
+  position: absolute;
+  left: -9px; top: 4px; bottom: 22px;
+  width: 3px;
+  border-radius: 2px;
+  background: #111;
+}
+/* 360폭 카드를 0.2889배 축소해 썸네일에 담음 (104/360). container-type로 cqw도 정상 스케일 */
 .deck-thumb-inner {
   width: 360px;
   height: 450px;
-  transform: scale(0.19444);
+  transform: scale(0.28889);
   transform-origin: top left;
   pointer-events: none;
   container-type: inline-size;
 }
-.deck-item-bar {
+/* 우상단 X 삭제 배지 (평소 숨김 → hover 시 표시 = 실수 클릭 방지) */
+.deck-del {
+  position: absolute;
+  top: -8px; right: -8px;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: #111;
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 4px;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  z-index: 5;
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+  transition: opacity 0.12s ease, transform 0.12s ease, background 0.12s ease;
 }
-.deck-item-idx { font-size: 10px; color: #8a8a8e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.deck-item-actions { display: flex; gap: 1px; flex-shrink: 0; }
-.deck-item-actions button {
-  border: none; background: none; color: #8a8a8e;
-  font-size: 12px; width: 15px; height: 15px; line-height: 1; padding: 0;
+.deck-item:hover .deck-del { opacity: 1; transform: scale(1); pointer-events: auto; }
+.deck-del:hover { background: #e2352f; }
+.deck-del:disabled { opacity: 0; pointer-events: none; }
+.deck-idx {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: #8a8a8e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
 }
-.deck-item-actions button:disabled { opacity: 0.25; }
 .deck-add {
   flex-shrink: 0;
-  width: 70px; height: 88px;
+  width: 104px; height: 130px;
   border: 2px dashed #d0d0d3;
-  border-radius: 5px;
+  border-radius: 7px;
   background: none;
   color: #8a8a8e;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
 }
 
