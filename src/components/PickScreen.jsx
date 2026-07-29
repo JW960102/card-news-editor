@@ -21,7 +21,7 @@ export default function PickScreen({ candidates, onPick, onBack, onRegenerate })
                   className="pick-thumb"
                   style={{ ...THEMES[c.themeId].vars, background: 'var(--card-bg)', color: 'var(--card-ink)' }}
                 >
-                  <div className="pick-thumb-inner">
+                  <div className={'pick-thumb-inner' + (c.category ? ' cat-' + c.category : '')}>
                     <TemplateRenderer card={card} editable={false} />
                   </div>
                 </div>

@@ -3,7 +3,7 @@ import TemplateRenderer from './TemplateRenderer.jsx'
 import { TEMPLATES } from '../data/templates.js'
 
 // 하단 레이어(카드) 관리: 드래그로 순서변경 + 좌상단 X 삭제 + 썸네일 미리보기.
-export default function DeckStrip({ cards, currentIndex, theme, onSelect, onAdd, onDelete, onReorder }) {
+export default function DeckStrip({ cards, currentIndex, theme, category, onSelect, onAdd, onDelete, onReorder }) {
   const [dragIndex, setDragIndex] = useState(null)
   const [overIndex, setOverIndex] = useState(null)
 
@@ -39,7 +39,7 @@ export default function DeckStrip({ cards, currentIndex, theme, onSelect, onAdd,
           >×</button>
           <div className="deck-thumb">
             <div
-              className="deck-thumb-inner"
+              className={'deck-thumb-inner' + (category ? ' cat-' + category : '')}
               style={{ ...theme.vars, background: 'var(--card-bg)', color: 'var(--card-ink)' }}
             >
               <TemplateRenderer card={card} editable={false} />

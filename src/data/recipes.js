@@ -1,25 +1,17 @@
-// 구성 레시피 = 카드 템플릿의 순서 패턴. 표지 뒤에 mid 패턴을 카드 수만큼 채움.
-export const RECIPES = {
-  info:  { label: '정보 전달형', mid: ['grid', 'stat', 'checklist'] },
-  story: { label: '스토리형',    mid: ['body', 'quote', 'punch'] },
-  tips:  { label: '요약·팁형',   mid: ['checklist', 'grid', 'stat'] },
+// 6개 스타일 카테고리 = 레시피(구성) + 테마 풀 + 톤을 한 묶음으로 (리서치 스펙 C장 기반).
+// 하나만 고르면 구성·색·톤이 다 정해짐. 'auto'는 후보마다 다른 카테고리로 생성.
+export const CATEGORIES = {
+  editorial: { label: '미니멀 에디토리얼', themes: ['editorial', 'oat'],            mid: ['body', 'quote', 'body'],       tone: '담백·선언형' },
+  essay:     { label: '감성 에세이',       themes: ['cream', 'blush', 'lavender'],  mid: ['body', 'quote', 'punch'],      tone: '서정·1인칭·여운' },
+  business:  { label: '비즈니스 리포트',   themes: ['sky', 'editorial'],            mid: ['grid', 'stat', 'checklist'],   tone: '명확·데이터' },
+  natural:   { label: '프레시 내추럴',     themes: ['sage'],                        mid: ['checklist', 'grid', 'stat'],   tone: '친근·실용·따뜻' },
+  bold:      { label: '볼드 트렌디',       themes: ['mono'],                        mid: ['punch', 'stat', 'punch'],      tone: '짧고 강한 훅' },
+  promo:     { label: '브랜드 프로모션',   themes: ['blush', 'cream', 'sky'],       mid: ['grid', 'stat', 'checklist'],   tone: '행동유도·혜택' },
 }
-export const RECIPE_IDS = Object.keys(RECIPES)
+export const CATEGORY_IDS = Object.keys(CATEGORIES)
 
-// 무드(테마 카테고리) → 사용할 테마 후보. null = 전체(자동, 가장 다양)
-export const MOOD_THEMES = {
-  auto: null,
-  editorial: ['editorial', 'oat'],
-  soft: ['cream', 'blush', 'lavender'],
-  business: ['sky', 'editorial'],
-  natural: ['sage'],
-  bold: ['mono'],
-}
-export const MOODS = [
+// 설정 화면의 "스타일" 선택지 (자동 + 6개)
+export const STYLE_OPTIONS = [
   { id: 'auto', label: '자동 (다양하게)' },
-  { id: 'editorial', label: '미니멀 에디토리얼' },
-  { id: 'soft', label: '감성 에세이' },
-  { id: 'business', label: '비즈니스 리포트' },
-  { id: 'natural', label: '프레시 내추럴' },
-  { id: 'bold', label: '볼드 트렌디' },
+  ...CATEGORY_IDS.map((id) => ({ id, label: CATEGORIES[id].label })),
 ]
