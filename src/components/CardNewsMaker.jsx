@@ -27,6 +27,7 @@ export default function CardNewsMaker({ initialDeck, onRestart }) {
   const current = Math.min(currentRaw, cards.length - 1)
   const card = cards[current]
   const theme = THEMES[themeId]
+  const category = initialDeck?.category || '' // 카테고리 비주얼 스타일
 
   // ── 문서 갱신 헬퍼 ──
   const setCards = (updater, tag) =>
@@ -185,7 +186,7 @@ export default function CardNewsMaker({ initialDeck, onRestart }) {
 
         {/* 중앙 캔버스 */}
         <main className="maker-stage">
-          <CardCanvas card={card} theme={theme} onSlot={setSlot} cardRef={cardRef} />
+          <CardCanvas card={card} theme={theme} category={category} onSlot={setSlot} cardRef={cardRef} />
         </main>
       </div>
 
@@ -194,6 +195,7 @@ export default function CardNewsMaker({ initialDeck, onRestart }) {
         cards={cards}
         currentIndex={current}
         theme={theme}
+        category={category}
         onSelect={setCurrent}
         onAdd={addCard}
         onDelete={requestDelete}

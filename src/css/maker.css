@@ -524,3 +524,47 @@
 /* 한줄강조: v0 중앙 / v1 좌측상단 / v2 좌측하단 */
 .tpl-punch.v1 { justify-content: flex-start; }
 .tpl-punch.v2 { justify-content: flex-end; }
+
+/* ═══════════════════════════════════════════
+   카테고리별 비주얼 스타일 (타이포 personality)
+   .cat-{id}는 카드 루트(card-canvas / thumb-inner)에 붙음
+   ═══════════════════════════════════════════ */
+
+/* 미니멀 에디토리얼 — 여백↑, 절제, 소형 트랙트 라벨 */
+.cat-editorial .tpl { padding: 14cqw 12cqw; }
+.cat-editorial .tpl-cover .tpl-title { font-size: 10.5cqw; font-weight: 500; }
+.cat-editorial .tpl-cover .tpl-subtitle { text-transform: uppercase; letter-spacing: 0.15em; font-size: 3.4cqw; }
+.cat-editorial .tpl-heading, .cat-editorial .tpl-cta-heading { font-weight: 500; }
+
+/* 감성 에세이 — 세리프 전면, 여유 있는 행간 */
+.cat-essay .tpl-title,
+.cat-essay .tpl-heading,
+.cat-essay .tpl-cta-heading,
+.cat-essay .tpl-punch-text {
+  font-family: var(--font-body); font-weight: 400; letter-spacing: -0.01em;
+}
+.cat-essay .tpl-cover .tpl-title { font-size: 11cqw; line-height: 1.15; }
+.cat-essay .tpl-body .tpl-paragraph { font-size: 5.4cqw; line-height: 1.7; }
+
+/* 비즈니스 리포트 — 조밀·정돈 */
+.cat-business .tpl { padding: 9cqw 8cqw; }
+.cat-business .tpl-cover .tpl-title { font-size: 9.5cqw; letter-spacing: -0.02em; }
+.cat-business .tpl-heading { font-size: 6cqw; }
+
+/* 프레시 내추럴 — 친근·여유 */
+.cat-natural .tpl-cover .tpl-title { font-size: 11cqw; }
+.cat-natural .tpl-body .tpl-paragraph,
+.cat-natural .tpl-check-text,
+.cat-natural .tpl-grid-label { line-height: 1.5; }
+
+/* 볼드 트렌디 — 초대형·고대비 */
+.cat-bold .tpl { padding: 9cqw 8cqw; }
+.cat-bold .tpl-cover .tpl-title { font-size: 17cqw; font-weight: 700; line-height: 0.98; letter-spacing: -0.04em; }
+.cat-bold .tpl-cover .tpl-subtitle { text-transform: uppercase; letter-spacing: 0.1em; }
+.cat-bold .tpl-punch-text { font-size: 16cqw; font-weight: 700; }
+.cat-bold .tpl-heading, .cat-bold .tpl-cta-heading { font-weight: 700; }
+
+/* 브랜드 프로모션 — 강조·활기 */
+.cat-promo .tpl-cover .tpl-title { font-size: 13cqw; font-weight: 700; }
+.cat-promo .tpl-cover .tpl-subtitle { text-transform: uppercase; letter-spacing: 0.12em; }
+.cat-promo .tpl-cta-btn { font-size: 5cqw; }

@@ -1,12 +1,11 @@
 import { useState } from 'react'
-import { RECIPES, RECIPE_IDS, MOODS } from '../data/recipes.js'
+import { STYLE_OPTIONS } from '../data/recipes.js'
 
 // ① 설정(브리프) 화면 — 몇 가지만 정하면 시안 자동 생성
 export default function SetupScreen({ onGenerate }) {
   const [title, setTitle] = useState('')
   const [count, setCount] = useState(5)
-  const [recipeId, setRecipeId] = useState('info')
-  const [mood, setMood] = useState('auto')
+  const [style, setStyle] = useState('auto')
 
   return (
     <div className="setup">
@@ -34,28 +33,17 @@ export default function SetupScreen({ onGenerate }) {
         </label>
 
         <label className="setup-field">
-          <span className="setup-label">구성</span>
+          <span className="setup-label">스타일</span>
           <div className="chip-row">
-            {RECIPE_IDS.map((id) => (
-              <button key={id} className={'chip' + (recipeId === id ? ' active' : '')} onClick={() => setRecipeId(id)}>
-                {RECIPES[id].label}
+            {STYLE_OPTIONS.map((o) => (
+              <button key={o.id} className={'chip' + (style === o.id ? ' active' : '')} onClick={() => setStyle(o.id)}>
+                {o.label}
               </button>
             ))}
           </div>
         </label>
 
-        <label className="setup-field">
-          <span className="setup-label">무드</span>
-          <div className="chip-row">
-            {MOODS.map((m) => (
-              <button key={m.id} className={'chip' + (mood === m.id ? ' active' : '')} onClick={() => setMood(m.id)}>
-                {m.label}
-              </button>
-            ))}
-          </div>
-        </label>
-
-        <button className="setup-go" onClick={() => onGenerate({ title, count, recipeId, mood })}>
+        <button className="setup-go" onClick={() => onGenerate({ title, count, style })}>
           시안 4개 생성 →
         </button>
       </div>

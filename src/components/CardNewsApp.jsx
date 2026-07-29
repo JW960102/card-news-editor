@@ -20,7 +20,7 @@ export default function CardNewsApp() {
   }
   const handleRegenerate = () => setCandidates(generateDecks(brief))
   const handlePick = (deck) => {
-    setChosen({ cards: deck.cards, themeId: deck.themeId })
+    setChosen({ cards: deck.cards, themeId: deck.themeId, category: deck.category })
     setEditKey((k) => k + 1)
     setStep('edit')
   }
