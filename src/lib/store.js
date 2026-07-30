@@ -1,5 +1,5 @@
-// 레이아웃 저장. 지금은 localStorage + JSON 내보내기.
-// TODO(백엔드): saveDeck 안에서 Supabase 로 POST 하도록 교체 (URL/anon key 받으면).
+// 레이아웃 저장. localStorage + JSON 내보내기 + (설정 시) Supabase 백엔드.
+import { saveRemote } from './backend.js'
 const KEY = 'cn_layouts'
 
 export function loadAll() {
@@ -15,7 +15,8 @@ export function saveDeck(deck) {
   else all.push(rec)
   try { localStorage.setItem(KEY, JSON.stringify(all)) }
   catch (e) { console.error('저장 실패(용량 초과 가능)', e); alert('저장 실패 — 이미지가 많으면 용량 한도를 넘을 수 있어요.') }
-  // 백엔드가 연결되면 여기서 원격 저장도 (fire-and-forget)
+  // 백엔드가 설정돼 있으면 원격에도 누적 저장 (fire-and-forget, 실패해도 앱 안 멈춤)
+  saveRemote(rec)
   return all.length
 }
 
