@@ -3,6 +3,7 @@ import Stage from './Stage.jsx'
 import { STYLES } from '../data/styles.js'
 import { ARCHETYPES } from '../data/archetypes.js'
 import { saveDeck, exportDeck } from '../lib/store.js'
+import { deckTokens } from '../lib/tokens.js'
 
 // ② 편집 — 생성된 뼈대의 텍스트를 그 자리에서 수정 + 저장.
 //    (드래그·리사이즈·PNG 삽입은 다음 단계)
@@ -13,7 +14,7 @@ export default function GenEditor({ deck, onBack, onRegenerate }) {
   const [saved, setSaved] = useState(0)
   useEffect(() => { setCards(deck.cards) }, [deck])
 
-  const tokens = STYLES[deck.styleId]?.tokens || STYLES.stats.tokens
+  const tokens = deckTokens(deck)
   const ar = `${deck.canvas.w} / ${deck.canvas.h}`
 
   const onText = (ci) => (elId, value) =>
