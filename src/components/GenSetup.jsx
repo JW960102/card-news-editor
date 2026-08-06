@@ -4,7 +4,7 @@ import { ARCHETYPES, MID_TYPES } from '../data/archetypes.js'
 import { loadAll, deleteSaved } from '../lib/store.js'
 import Stage from './Stage.jsx'
 
-// ① 설정 — [장수 · 스타일 · 레이아웃 타입] 정하면 뼈대 생성. + 저장한 작업 불러오기.
+// ① 설정 — [장수 · 스타일 · 레이아웃 타입] 정하면 초안 생성. + 저장한 작업 불러오기.
 const ui = { fontFamily: 'sans-serif' }
 const chip = (on) => ({ height: 40, padding: '0 16px', borderRadius: 999, border: '1px solid ' + (on ? '#111' : '#d5d5d5'), background: on ? '#111' : '#fff', color: on ? '#fff' : '#333', fontWeight: 500, cursor: 'pointer' })
 
@@ -20,10 +20,11 @@ export default function GenSetup({ onGenerate, onOpen }) {
   const remove = (e, id) => { e.stopPropagation(); setSaved(deleteSaved(id)) }
 
   return (
-    <div style={{ minHeight: '100%', background: '#f4f4f5', padding: 40, ...ui }}>
-      <div style={{ maxWidth: 520 }}>
-        <h1 style={{ fontSize: 26, fontWeight: 600, marginBottom: 6 }}>카드뉴스 뼈대 만들기</h1>
-        <p style={{ color: '#666', marginBottom: 32, fontSize: 14 }}>몇 가지만 누르면 레이아웃·텍스트·그래프 뼈대를 만들어드려요. 세부는 직접 다듬으면 돼요.</p>
+    // 화면 가운데로 모은다. 왼쪽에 붙여 두면 넓은 화면에서 한쪽으로 쏠려 보인다.
+    <div style={{ minHeight: '100%', background: '#f4f4f5', padding: 40, ...ui, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div style={{ width: '100%', maxWidth: 520, textAlign: 'center' }}>
+        <h1 style={{ fontSize: 26, fontWeight: 600, marginBottom: 6 }}>카드뉴스 초안 만들기</h1>
+        <p style={{ color: '#666', marginBottom: 32, fontSize: 14 }}>몇 가지만 고르면 레이아웃·텍스트·그래프가 놓인 초안을 만들어드려요. 세부는 직접 다듬으면 돼요.</p>
 
         <Field label="주제 / 제목">
           <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="예: 2분기 판매 리포트"
@@ -31,7 +32,7 @@ export default function GenSetup({ onGenerate, onOpen }) {
         </Field>
 
         <Field label="카드 수">
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
             {[3, 4, 5, 6, 7].map((n) => (
               <button key={n} onClick={() => setCount(n)} style={{ width: 46, height: 42, borderRadius: 10, border: '1px solid ' + (count === n ? '#111' : '#d5d5d5'), background: count === n ? '#111' : '#fff', color: count === n ? '#fff' : '#333', fontWeight: 600, cursor: 'pointer' }}>{n}</button>
             ))}
@@ -39,7 +40,7 @@ export default function GenSetup({ onGenerate, onOpen }) {
         </Field>
 
         <Field label="스타일">
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
             {STYLE_IDS.map((id) => (
               <button key={id} onClick={() => setStyleId(id)} style={chip(styleId === id)}>{STYLES[id].label}</button>
             ))}
@@ -47,7 +48,7 @@ export default function GenSetup({ onGenerate, onOpen }) {
         </Field>
 
         <Field label="중간 카드 레이아웃 (복수 선택 · 표지·마무리는 자동)">
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
             {MID_TYPES.map((t) => (
               <button key={t} onClick={() => toggleType(t)} style={chip(types.includes(t))}>{ARCHETYPES[t].label}</button>
             ))}
@@ -56,14 +57,14 @@ export default function GenSetup({ onGenerate, onOpen }) {
 
         <button onClick={() => onGenerate({ title, count, styleId, types: types.length ? types : MID_TYPES })}
           style={{ marginTop: 12, height: 50, padding: '0 28px', borderRadius: 12, background: '#111', color: '#fff', border: 'none', fontWeight: 600, fontSize: 16, cursor: 'pointer' }}>
-          뼈대 생성 →
+          초안 만들기 →
         </button>
       </div>
 
       {saved.length > 0 && (
-        <div style={{ marginTop: 48 }}>
+        <div style={{ marginTop: 48, width: '100%', maxWidth: 820, textAlign: 'center' }}>
           <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 14 }}>저장한 작업 · {saved.length}개</h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 18 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 18, justifyContent: 'center' }}>
             {saved.map((deck) => {
               const tokens = STYLES[deck.styleId]?.tokens || STYLES.stats.tokens
               const cover = deck.cards?.[0]
