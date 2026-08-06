@@ -5,6 +5,8 @@ import { ARCHETYPES } from '../data/archetypes.js'
 import { useHistory } from '../lib/useHistory.js'
 import { saveDeck, exportDeck } from '../lib/store.js'
 import { captureCard, downloadDataURL } from '../lib/exportCard.js'
+import { FACES, FACE_IDS } from '../data/fonts.js'
+import { deckTokens } from '../lib/tokens.js'
 
 // ② 작업창 — 생성된 뼈대를 요소 단위로 선택·드래그·리사이즈·편집. undo/redo 지원.
 // (히스토리는 deck 교체 시 GenApp이 key로 remount → 자동 초기화)
@@ -16,7 +18,7 @@ const pct = (v, total) => `${(v / total) * 100}%`
 let uidc = 0
 const newId = () => `el_u${Date.now()}_${uidc++}`
 
-export default function GenWorkspace({ deck, onBack, onRegenerate }) {
+export default function GenWorkspace({ deck, onBack, onRegenerate, onPatch }) {
   // 카드 문서를 히스토리로 관리 → undo/redo
   const { state: cards, set: setHist, undo, redo, canUndo, canRedo } = useHistory(deck.cards)
   const [cur, setCur] = useState(0)
@@ -28,7 +30,7 @@ export default function GenWorkspace({ deck, onBack, onRegenerate }) {
   const dragIdx = useRef(null)
 
   const canvas = deck.canvas
-  const tokens = STYLES[deck.styleId]?.tokens || STYLES.stats.tokens
+  const tokens = deckTokens(deck)
   const card = cards[Math.min(cur, cards.length - 1)]
   const sel = card?.elements.find((e) => e.id === selId) || null
 
@@ -125,11 +127,14 @@ export default function GenWorkspace({ deck, onBack, onRegenerate }) {
     <div style={{ height: '100%', overflow: 'hidden', background: '#ececed', ...ui, display: 'flex', flexDirection: 'column' }}>
       {/* 상단 툴바 */}
       <header style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 20px', background: '#fff', borderBottom: '1px solid #e2e2e2' }}>
-        <button onClick={onBack} style={btn()}>← 설정</button>
+        {/* 설정은 이제 좌측 패널이다 — 화면을 떠나지 않고 다시 펼치기만 한다 */}
+        <button onClick={onBack} style={btn()} title="설정 패널 열기">☰ 설정</button>
         <button onClick={onRegenerate} style={btn()}>🎲 다시 생성</button>
         <button onClick={undo} disabled={!canUndo} title="되돌리기 (Ctrl+Z)" style={btn({ opacity: canUndo ? 1 : 0.4 })}>↩</button>
         <button onClick={redo} disabled={!canRedo} title="다시 실행 (Ctrl+Shift+Z)" style={btn({ opacity: canRedo ? 1 : 0.4 })}>↪</button>
         <span style={{ fontSize: 14, fontWeight: 600, marginLeft: 6 }}>{STYLES[deck.styleId]?.label}</span>
+        {/* 폰트 세트는 좌측 설정 패널에 있다 (문서 전체 설정),
+            요소별 제목체/본문체는 우측 인스펙터에 있다. 여기엔 두지 않는다. */}
         <div style={{ flex: 1 }} />
         <button onClick={addText} style={btn()}>+ 텍스트</button>
         <button onClick={addImage} style={btn()}>+ 이미지</button>
@@ -187,6 +192,32 @@ export default function GenWorkspace({ deck, onBack, onRegenerate }) {
                       {['left', 'center', 'right'].map((a) => (
                         <button key={a} onClick={() => updateEl(sel.id, { align: a })} style={btn({ flex: 1, height: 30, padding: 0, background: sel.align === a ? '#111' : '#fff', color: sel.align === a ? '#fff' : '#333' })}>{a === 'left' ? '좌' : a === 'center' ? '중' : '우'}</button>
                       ))}
+                    </div>
+                  </Row>
+                  {/* 이 텍스트만 다른 글꼴로. 버튼을 그 글꼴로 그려 눌러보기 전에 보이게 한다.
+                      '세트 따름'을 고르면 좌측 패널의 폰트 세트를 그대로 쓴다(기본값). */}
+                  <Row label="글꼴">
+                    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                      <button onClick={() => updateEl(sel.id, { face: null })}
+                        style={btn({ height: 30, padding: '0 10px', fontSize: 12, background: !sel.face ? '#111' : '#fff', color: !sel.face ? '#fff' : '#333' })}>세트 따름</button>
+                      {FACE_IDS.map((id) => {
+                        const on = sel.face === id
+                        return (
+                          <button key={id} onClick={() => updateEl(sel.id, { face: id })}
+                            style={btn({ height: 30, padding: '0 10px', fontSize: 12, background: on ? '#111' : '#fff', color: on ? '#fff' : '#333', fontFamily: FACES[id].family })}>{FACES[id].label}</button>
+                        )
+                      })}
+                    </div>
+                  </Row>
+                  <Row label="굵기">
+                    <div style={{ display: 'flex', gap: 6 }}>
+                      {[400, 600, 800].map((w) => {
+                        const on = (sel.weight || 400) === w
+                        return (
+                          <button key={w} onClick={() => updateEl(sel.id, { weight: w })}
+                            style={btn({ flex: 1, height: 30, padding: 0, background: on ? '#111' : '#fff', color: on ? '#fff' : '#333', fontWeight: w })}>{w === 400 ? '보통' : w === 600 ? '중간' : '굵게'}</button>
+                        )
+                      })}
                     </div>
                   </Row>
                 </>

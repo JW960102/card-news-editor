@@ -1,9 +1,12 @@
 import { useRef, useLayoutEffect } from 'react'
 import EditableText from './EditableText.jsx'
+import { FACES } from '../data/fonts.js'
 
 // 카드 1장 렌더러 — 요소배열을 설계 px→cqw 로 환산해 절대배치.
 // 텍스트는 FitText 로 박스(w×h)에 맞춰 자동 축소(넘침 방지).
 const FONT = { display: 'var(--font-display)', body: 'var(--font-body)' }
+// 요소가 face 를 들고 있으면 그 서체를 그대로 쓰고, 없으면 덱의 폰트 세트를 따른다.
+const faceOf = (e) => (e.face && FACES[e.face] ? FACES[e.face].family : (FONT[e.font] || FONT.display))
 const VALIGN = { top: 'flex-start', center: 'center', bottom: 'flex-end' }
 const MIN_SIZE = 10 // 설계 px 최소 글자 크기
 
@@ -30,7 +33,7 @@ function FitText({ e, cq }) {
   }, [e.content, e.size, e.w, e.h, e.lh, e.align]) // 위치(x,y) 변경 땐 재측정 안 함
 
   const inner = {
-    width: '100%', fontFamily: FONT[e.font] || FONT.display,
+    width: '100%', fontFamily: faceOf(e),
     fontWeight: e.weight, fontSize: cq(e.size), color: e.color,
     textAlign: e.align, letterSpacing: '-0.03em', lineHeight: e.lh || 1.2,
   }
@@ -94,7 +97,7 @@ export default function Stage({ card, canvas, editable = false, onText }) {
 
         // text
         if (editable && onText) {
-          const tstyle = { ...abs(e), fontFamily: FONT[e.font] || FONT.display, fontWeight: e.weight, fontSize: cq(e.size), color: e.color, textAlign: e.align, letterSpacing: '-0.03em', lineHeight: e.lh || 1.2 }
+          const tstyle = { ...abs(e), fontFamily: faceOf(e), fontWeight: e.weight, fontSize: cq(e.size), color: e.color, textAlign: e.align, letterSpacing: '-0.03em', lineHeight: e.lh || 1.2 }
           return <EditableText key={e.id} value={e.content} onChange={(v) => onText(e.id, v)} style={tstyle} />
         }
         return <FitText key={e.id} e={e} cq={cq} />
