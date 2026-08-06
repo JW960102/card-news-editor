@@ -119,7 +119,10 @@ export default function GenWorkspace({ deck, onBack, onRegenerate }) {
   const hitW = (e) => e.w != null ? e.w : 240
 
   return (
-    <div style={{ minHeight: '100%', background: '#ececed', ...ui, display: 'flex', flexDirection: 'column' }}>
+    // height(=100%)로 고정한다. minHeight 면 내용이 넘칠 때 문서 자체가 늘어나
+    // 바깥 스크롤바가 생긴다 — 안쪽 main/aside/footer 가 이미 각자 스크롤하므로 필요 없다.
+    // (특히 iframe(포트폴리오 InApp 모달)에 띄울 때 바깥 스크롤이 거슬린다)
+    <div style={{ height: '100%', overflow: 'hidden', background: '#ececed', ...ui, display: 'flex', flexDirection: 'column' }}>
       {/* 상단 툴바 */}
       <header style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 20px', background: '#fff', borderBottom: '1px solid #e2e2e2' }}>
         <button onClick={onBack} style={btn()}>← 설정</button>
